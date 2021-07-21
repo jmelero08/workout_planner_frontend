@@ -37,7 +37,9 @@ function createFormHandler(e) {
 }
 
 function postFetch(title, description, image_url, category_id){
-    const bodyData = {title, description, image_url, category_id}
+    // console.log(title, description, image_url, category_id)
+    let bodyData = {title, description, image_url, category_id}
+
     fetch(endPoint, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -45,7 +47,8 @@ function postFetch(title, description, image_url, category_id){
     })
     .then(response => response.json())
     .then(workout => {
-        const workoutData = workout.data.attributes
+        console.log(workout)
+        const workoutData = workout.data
         // render JSON response
         const workoutMarkup = `
         <div data-id=${workout.id}>
