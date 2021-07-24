@@ -13,22 +13,10 @@ function getWorkouts() {
     .then(res => res.json())
     .then(workouts => {
       workouts.data.forEach(workout => {
-        render(workout)
+        let newWorkout = new Workout(workout, workout.attributes)
+        document.querySelector('#workout-container').innerHTML += newWorkout.renderWorkoutCard()
       })
     })
-}
-
-function render(workout) {
-  const workoutMarkup = `
-  <div data-id=${workout.id}>
-    <img src=${workout.attributes.image_url} height="200" width="250">
-    <h3>${workout.attributes.title}</h3>
-    <p>${workout.attributes.category.name}</p>
-  <button data-id=${workout.id}>edit</button>
-  </div>
-  <br><br>`;
-
-  document.querySelector('#workout-container').innerHTML += workoutMarkup
 }
 
 function createFormHandler(e) {
@@ -54,7 +42,8 @@ function postFetch(title, description, image_url, category_id){
         console.log(workout)
         const workoutData = workout.data
         // render JSON response
-        render(workoutData)
+        let newWorkout = new Workout(workoutData, workoutData.attributes)
+        document.querySelector('#workout-container').innerHTML += newWorkout.renderWorkoutCard()
       })
 }
 
