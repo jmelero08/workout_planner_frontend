@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const createWorkoutPlanForm = document.querySelector('#create-workoutplan-form')
     createWorkoutPlanForm.addEventListener("submit", (e) => createFormHandler(e))
 
+    const workoutplanContainer = document.querySelector('#workoutplan-container')
+    workoutplanContainer.addEventListener('click', e => {
+    console.log('clicked');
 })
+
 
 function getWorkouts() {
     fetch(endPoint)
@@ -19,6 +23,8 @@ function getWorkouts() {
     })
 }
 
+
+
 function createFormHandler(e) {
     e.preventDefault()
     const titleInput = document.querySelector('#input-title').value
@@ -29,7 +35,6 @@ function createFormHandler(e) {
 }
 
 function postFetch(title, description, image_url, category_id){
-    // console.log(title, description, image_url, category_id)
     let bodyData = {title, description, image_url, category_id}
 
     fetch(endPoint, {
