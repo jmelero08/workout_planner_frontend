@@ -1,15 +1,21 @@
 const endPoint = "http://localhost:3000/api/v1/workout_plans"
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
     getWorkouts()
 
     const createWorkoutPlanForm = document.querySelector('#create-workoutplan-form')
     createWorkoutPlanForm.addEventListener("submit", (e) => createFormHandler(e))
 
-    const workoutplanContainer = document.querySelector('#workoutplan-container')
-    workoutplanContainer.addEventListener('click', e => {
-    console.log('clicked');
-})
+    const workoutplanContainer = document.querySelector('#workout-container')
+    workoutplanContainer.addEventListener('click', (e) => {
+      const id = parseInt(e.target.dataset.id);
+      const workoutplan = Workout.findById(id);
+      document.querySelector('#update-workout').innerHTML = workoutplan.renderUpdateForm();
+     })
+      document.querySelector('#update-workout').addEventListener('submit', e => updateFormHandler(e))
+ })
 
 
 function getWorkouts() {
@@ -52,3 +58,27 @@ function postFetch(title, description, image_url, category_id){
       })
 }
 
+function updateFormHandler(e) {
+  e.preventDefault();
+  const id = parseInt(e.target.dataset.id);
+  const workoutplan = Workout.findById(id);
+  const title = e.target.querySelector('#input-title').value;
+  const description = e.target.querySelector('#input-description').value;
+  const image_url = e.target.querySelector('#input-url').value;
+  const category_id = parseInt(e.target.querySelector('#categories').value);
+  patchWorkoutPlan(workoutplan, title, description, image_url, category_id)
+}
+
+function patchWorkoutPlan(workoutplan, title, description, image_url, category_id) {
+  const bodyJSON = { title, description, image_url, category_id }
+  fetch(`http://localhost:3000/api/v1/workout_plans/${workoutplan.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(bodyJSON),
+  })
+    .then(res => res.json())
+    .then(updatedworkout => console.log(updatedworkout));
+}
