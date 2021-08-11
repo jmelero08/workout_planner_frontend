@@ -62,6 +62,14 @@ class Workout{
       </form>
     `;
     }
+
+
+    update({title, description, image_url, category}) {
+      this.title = title;
+      this.description = description;
+      this.image_url = image_url;
+      this.category = category;
+    }
 }
 
 Workout.all = []

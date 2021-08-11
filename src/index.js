@@ -80,5 +80,11 @@ function patchWorkoutPlan(workoutplan, title, description, image_url, category_i
     body: JSON.stringify(bodyJSON),
   })
     .then(res => res.json())
-    .then(updatedworkout => console.log(updatedworkout));
+    .then(updatedworkout => {
+      const workout = Workout.findById(updatedworkout.data.id);
+      workout.update(updatedworkout.data.attributes);
+      document.querySelector('#workout-container').innerHTML = '';
+      Workout.all.forEach(workout => document.querySelector('#workout-container').innerHTML += workout.renderWorkoutCard());
+      document.querySelector('#update-workout').innerHTML = '';
+    })
 }
